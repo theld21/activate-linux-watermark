@@ -1,2 +1,4 @@
 #!/bin/sh
-pkill -f '^(/usr/bin/)?activate-linux-watermark$' || true
+# Stop the watermark only on real removal, not on upgrade.
+[ "$1" = remove ] && pkill -f '^(/usr/bin/)?activate-linux-watermark$'
+exit 0

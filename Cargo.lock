@@ -4,7 +4,7 @@ version = 4
 
 [[package]]
 name = "activate-linux-watermark"
-version = "0.1.8"
+version = "0.1.9"
 dependencies = [
  "fontdue",
  "gtk4",
