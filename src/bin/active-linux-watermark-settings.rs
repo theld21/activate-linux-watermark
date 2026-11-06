@@ -11,11 +11,11 @@ type Shared = Rc<RefCell<Config>>;
 
 fn main() {
     // Start the watermark if it is not running yet.
-    let running = std::process::Command::new("pgrep").args(["-x", "activate-linux"]).status().is_ok_and(|s| s.success());
+    let running = std::process::Command::new("pgrep").args(["-f", "^(/usr/bin/)?active-linux-watermark$"]).status().is_ok_and(|s| s.success());
     if !running {
-        let _ = std::process::Command::new("activate-linux").spawn();
+        let _ = std::process::Command::new("active-linux-watermark").spawn();
     }
-    let app = Application::builder().application_id("io.github.theld21.ActivateLinux").build();
+    let app = Application::builder().application_id("io.github.theld21.ActiveLinuxWatermark").build();
     app.connect_activate(build);
     app.run();
 }
@@ -70,6 +70,6 @@ fn build(app: &Application) {
     slider(2, "Right margin", c.right, |c, v| c.right = v);
     slider(3, "Bottom margin", c.bottom, |c, v| c.bottom = v);
 
-    ApplicationWindow::builder().application(app).title("Activate Linux").default_width(560)
+    ApplicationWindow::builder().application(app).title("Active Linux Watermark").default_width(560)
         .child(&grid).build().present();
 }

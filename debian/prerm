@@ -1,2 +1,2 @@
 #!/bin/sh
-pkill -x activate-linux || true
+pkill -f '^(/usr/bin/)?active-linux-watermark$' || true

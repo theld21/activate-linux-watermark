@@ -1,4 +1,4 @@
-// Shared config: $XDG_CONFIG_HOME/activate-linux.conf (key=value).
+// Shared config: $XDG_CONFIG_HOME/active-linux-watermark.conf (key=value).
 use std::path::PathBuf;
 
 #[derive(Clone)]
@@ -14,7 +14,7 @@ impl Default for Config {
 pub fn path() -> PathBuf {
     std::env::var_os("XDG_CONFIG_HOME").map(PathBuf::from)
         .unwrap_or_else(|| PathBuf::from(std::env::var_os("HOME").unwrap_or_default()).join(".config"))
-        .join("activate-linux.conf")
+        .join("active-linux-watermark.conf")
 }
 
 impl Config {
