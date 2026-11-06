@@ -5,6 +5,6 @@ Comment=Show and customize the "Activate Linux" watermark
 TryExec=activate-linux-watermark-settings
 Exec=activate-linux-watermark-settings
 Icon=io.github.theld21.ActivateLinuxWatermark
-Categories=Utility;Settings;
+Categories=Utility;
 Keywords=activate;watermark;windows;dvd;
 StartupWMClass=io.github.theld21.ActivateLinuxWatermark
