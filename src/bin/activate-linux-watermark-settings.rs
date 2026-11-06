@@ -1,6 +1,6 @@
 // GTK4 settings app. Every change is saved instantly; the watermark picks it up live.
 use gtk4::prelude::*;
-use gtk4::{Adjustment, Application, ApplicationWindow, Entry, Grid, Label, Orientation, Scale, SpinButton};
+use gtk4::{Adjustment, Application, ApplicationWindow, CheckButton, Entry, Grid, Label, Orientation, Scale, SpinButton};
 use std::{cell::RefCell, rc::Rc};
 
 #[path = "../config.rs"]
@@ -70,6 +70,12 @@ fn build(app: &Application) {
     slider(2, "Right margin", 1000.0, c.right, |c, v| c.right = v);
     slider(3, "Bottom margin", 1000.0, c.bottom, |c, v| c.bottom = v);
     slider(4, "Opacity (%)", 100.0, c.opacity, |c, v| c.opacity = v);
+
+    // DVD-logo style bouncing (ignores the margins).
+    let bounce = CheckButton::builder().label("Bouncing watermark").active(c.bounce).build();
+    grid.attach(&bounce, 1, 5, 2, 1);
+    let cb = cfg.clone();
+    bounce.connect_toggled(move |b| update(&cb, |c| c.bounce = b.is_active()));
 
     ApplicationWindow::builder().application(app).title("Activate Linux Watermark").default_width(560)
         .child(&grid).build().present();

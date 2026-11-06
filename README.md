@@ -15,7 +15,8 @@ It starts automatically at login. To start it now, open **Activate Linux Waterma
 
 ## Configure
 
-**Activate Linux Watermark Settings** lets you edit both lines, their font sizes, the right/bottom margins and the opacity.
+**Activate Linux Watermark Settings** lets you edit both lines, their font sizes, the right/bottom margins and the opacity,
+or turn on **Bouncing watermark** to make it drift and bounce off the screen edges like the old DVD logo.
 Changes apply instantly. Config file: `~/.config/activate-linux-watermark.conf`.
 
 ## Uninstall
