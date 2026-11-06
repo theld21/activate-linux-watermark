@@ -2,6 +2,7 @@
 Type=Application
 Name=Activate Linux Watermark
 Comment=Show and customize the "Activate Linux" watermark
+TryExec=activate-linux-watermark-settings
 Exec=activate-linux-watermark-settings
 Icon=io.github.theld21.ActivateLinuxWatermark
 Categories=Utility;Settings;

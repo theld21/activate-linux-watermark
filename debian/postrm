@@ -1,0 +1,4 @@
+#!/bin/sh
+# dpkg keeps /etc conffiles on "remove"; drop the autostart entry anyway.
+[ "$1" = remove ] || [ "$1" = purge ] && rm -f /etc/xdg/autostart/activate-linux-watermark.desktop
+exit 0

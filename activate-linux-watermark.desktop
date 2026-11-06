@@ -1,6 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Activate Linux Watermark
+TryExec=activate-linux-watermark
 Exec=activate-linux-watermark
 NoDisplay=true
 X-GNOME-Autostart-enabled=true
