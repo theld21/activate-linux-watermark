@@ -1,11 +1,11 @@
 [package]
-default-run = "active-linux-watermark"
-name = "active-linux-watermark"
-version = "0.1.1"
+default-run = "activate-linux-watermark"
+name = "activate-linux-watermark"
+version = "0.1.2"
 edition = "2021"
 description = "A Windows-style \"Activate Linux\" watermark for your desktop"
 license = "MIT"
-repository = "https://github.com/theld21/active-linux-watermark"
+repository = "https://github.com/theld21/activate-linux-watermark"
 authors = ["theld21 <thedev.ldt@gmail.com>"]
 
 [dependencies]
@@ -25,19 +25,19 @@ depends = "libc6, fontconfig, libgtk-4-1"
 license-file = ["LICENSE", "0"]
 maintainer-scripts = "debian/"
 assets = [
-  ["target/release/active-linux-watermark", "usr/bin/", "755"],
-  ["target/release/active-linux-watermark-settings", "usr/bin/", "755"],
-  ["active-linux-watermark.desktop", "etc/xdg/autostart/", "644"],
-  ["active-linux-watermark-settings.desktop", "usr/share/applications/", "644"],
+  ["target/release/activate-linux-watermark", "usr/bin/", "755"],
+  ["target/release/activate-linux-watermark-settings", "usr/bin/", "755"],
+  ["activate-linux-watermark.desktop", "etc/xdg/autostart/", "644"],
+  ["activate-linux-watermark-settings.desktop", "usr/share/applications/", "644"],
 ]
 
 [package.metadata.generate-rpm]
-pre_uninstall_script = "pkill -f '^(/usr/bin/)?active-linux-watermark$' || true"
+pre_uninstall_script = "pkill -f '^(/usr/bin/)?activate-linux-watermark$' || true"
 assets = [
-  { source = "target/release/active-linux-watermark", dest = "/usr/bin/active-linux-watermark", mode = "755" },
-  { source = "target/release/active-linux-watermark-settings", dest = "/usr/bin/active-linux-watermark-settings", mode = "755" },
-  { source = "active-linux-watermark-settings.desktop", dest = "/usr/share/applications/active-linux-watermark-settings.desktop", mode = "644" },
-  { source = "active-linux-watermark.desktop", dest = "/etc/xdg/autostart/active-linux-watermark.desktop", mode = "644" },
+  { source = "target/release/activate-linux-watermark", dest = "/usr/bin/activate-linux-watermark", mode = "755" },
+  { source = "target/release/activate-linux-watermark-settings", dest = "/usr/bin/activate-linux-watermark-settings", mode = "755" },
+  { source = "activate-linux-watermark-settings.desktop", dest = "/usr/share/applications/activate-linux-watermark-settings.desktop", mode = "644" },
+  { source = "activate-linux-watermark.desktop", dest = "/etc/xdg/autostart/activate-linux-watermark.desktop", mode = "644" },
 ]
 [package.metadata.generate-rpm.requires]
 fontconfig = "*"

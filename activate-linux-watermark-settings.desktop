@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Name=Active Linux Watermark Settings
+Name=Activate Linux Watermark Settings
 Comment=Change the watermark text, size and position
-Exec=active-linux-watermark-settings
+Exec=activate-linux-watermark-settings
 Icon=preferences-desktop
 Categories=Settings;

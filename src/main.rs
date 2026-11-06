@@ -25,6 +25,7 @@ fn render(font: &fontdue::Font, c: &Config) -> (u16, u16, Vec<u8>) {
     let w = lines.iter().map(|&(t, s)| text_w(t, s)).fold(0.0, f32::max).ceil() as usize + 4;
     let h = lines.iter().map(|&(_, s)| metrics(s).new_line_size).sum::<f32>().ceil() as usize + 4;
     let mut buf = vec![0u8; w * h * 4];
+    let opacity = (c.opacity.clamp(0.0, 100.0) * 2.55) as u32;
     let mut y = 0.0;
     for (text, size) in lines {
         let lm = metrics(size);
@@ -36,7 +37,7 @@ fn render(font: &fontdue::Font, c: &Config) -> (u16, u16, Vec<u8>) {
             for (i, &cov) in bmp.iter().enumerate() {
                 let (px, py) = (gx + (i % m.width) as i32, gy + (i / m.width) as i32);
                 if (0..w as i32).contains(&px) && (0..h as i32).contains(&py) {
-                    let a = (cov as u32 * 125 / 255) as u8; // light grey, ~50% opacity
+                    let a = (cov as u32 * opacity / 255) as u8; // white, premultiplied
                     let o = (py as usize * w + px as usize) * 4;
                     buf[o..o + 4].fill(a);
                 }

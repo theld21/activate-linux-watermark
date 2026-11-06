@@ -1,20 +1,20 @@
-// Shared config: $XDG_CONFIG_HOME/active-linux-watermark.conf (key=value).
+// Shared config: $XDG_CONFIG_HOME/activate-linux-watermark.conf (key=value).
 use std::path::PathBuf;
 
 #[derive(Clone)]
-pub struct Config { pub line1: String, pub size1: f64, pub line2: String, pub size2: f64, pub right: f64, pub bottom: f64 }
+pub struct Config { pub line1: String, pub size1: f64, pub line2: String, pub size2: f64, pub right: f64, pub bottom: f64, pub opacity: f64 }
 
 impl Default for Config {
     fn default() -> Self {
         Config { line1: "Activate Linux".into(), size1: 26.0, line2: "Go to Settings to activate Linux.".into(),
-                 size2: 16.0, right: 90.0, bottom: 60.0 }
+                 size2: 16.0, right: 90.0, bottom: 60.0, opacity: 50.0 }
     }
 }
 
 pub fn path() -> PathBuf {
     std::env::var_os("XDG_CONFIG_HOME").map(PathBuf::from)
         .unwrap_or_else(|| PathBuf::from(std::env::var_os("HOME").unwrap_or_default()).join(".config"))
-        .join("active-linux-watermark.conf")
+        .join("activate-linux-watermark.conf")
 }
 
 impl Config {
@@ -30,6 +30,7 @@ impl Config {
                 "size2" => c.size2 = num(c.size2),
                 "right" => c.right = num(c.right),
                 "bottom" => c.bottom = num(c.bottom),
+                "opacity" => c.opacity = num(c.opacity),
                 _ => {}
             }
         }
@@ -38,8 +39,8 @@ impl Config {
 
     #[allow(dead_code)] // only used by the settings app
     pub fn save(&self) {
-        let s = format!("line1={}\nsize1={}\nline2={}\nsize2={}\nright={}\nbottom={}\n",
-            self.line1, self.size1, self.line2, self.size2, self.right, self.bottom);
+        let s = format!("line1={}\nsize1={}\nline2={}\nsize2={}\nright={}\nbottom={}\nopacity={}\n",
+            self.line1, self.size1, self.line2, self.size2, self.right, self.bottom, self.opacity);
         let p = path();
         let _ = std::fs::create_dir_all(p.parent().unwrap());
         let _ = std::fs::write(p, s);

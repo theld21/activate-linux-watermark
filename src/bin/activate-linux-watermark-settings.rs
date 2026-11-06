@@ -11,11 +11,11 @@ type Shared = Rc<RefCell<Config>>;
 
 fn main() {
     // Start the watermark if it is not running yet.
-    let running = std::process::Command::new("pgrep").args(["-f", "^(/usr/bin/)?active-linux-watermark$"]).status().is_ok_and(|s| s.success());
+    let running = std::process::Command::new("pgrep").args(["-f", "^(/usr/bin/)?activate-linux-watermark$"]).status().is_ok_and(|s| s.success());
     if !running {
-        let _ = std::process::Command::new("active-linux-watermark").spawn();
+        let _ = std::process::Command::new("activate-linux-watermark").spawn();
     }
-    let app = Application::builder().application_id("io.github.theld21.ActiveLinuxWatermark").build();
+    let app = Application::builder().application_id("io.github.theld21.ActivateLinuxWatermark").build();
     app.connect_activate(build);
     app.run();
 }
@@ -56,10 +56,10 @@ fn build(app: &Application) {
     line(0, "Line 1", &c.line1, c.size1, |c, v| c.line1 = v, |c, v| c.size1 = v);
     line(1, "Line 2", &c.line2, c.size2, |c, v| c.line2 = v, |c, v| c.size2 = v);
 
-    // Distance sliders.
-    let slider = |row, title: &str, value: f64, set: fn(&mut Config, f64)| {
+    // Margin and opacity sliders.
+    let slider = |row, title: &str, max: f64, value: f64, set: fn(&mut Config, f64)| {
         label(title, row);
-        let scale = Scale::with_range(Orientation::Horizontal, 0.0, 1000.0, 1.0);
+        let scale = Scale::with_range(Orientation::Horizontal, 0.0, max, 1.0);
         scale.set_value(value);
         scale.set_draw_value(true);
         scale.set_digits(0);
@@ -67,9 +67,10 @@ fn build(app: &Application) {
         let c = cfg.clone();
         scale.connect_value_changed(move |s| update(&c, |c| set(c, s.value().round())));
     };
-    slider(2, "Right margin", c.right, |c, v| c.right = v);
-    slider(3, "Bottom margin", c.bottom, |c, v| c.bottom = v);
+    slider(2, "Right margin", 1000.0, c.right, |c, v| c.right = v);
+    slider(3, "Bottom margin", 1000.0, c.bottom, |c, v| c.bottom = v);
+    slider(4, "Opacity (%)", 100.0, c.opacity, |c, v| c.opacity = v);
 
-    ApplicationWindow::builder().application(app).title("Active Linux Watermark").default_width(560)
+    ApplicationWindow::builder().application(app).title("Activate Linux Watermark").default_width(560)
         .child(&grid).build().present();
 }
