@@ -134,10 +134,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 changed = true;
             }
         }
-        // Every 2 s: one window per monitor, resized and raised on top.
+        // Every 2 s: one window per monitor (none when disabled), resized and raised on top.
         if changed || now >= next_sync {
             next_sync = now + Duration::from_secs(2);
-            mons = monitors(&conn, root, sw, sh);
+            mons = if cfg.enabled { monitors(&conn, root, sw, sh) } else { Vec::new() };
             while wins.len() > mons.len() {
                 let (win, gc, _) = wins.pop().unwrap();
                 conn.free_gc(gc)?;
@@ -186,6 +186,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         conn.flush()?;
         // ~60 fps while bouncing, otherwise idle.
-        thread::sleep(Duration::from_millis(if cfg.bounce { 16 } else { 500 }));
+        thread::sleep(Duration::from_millis(if cfg.enabled && cfg.bounce { 16 } else { 500 }));
     }
 }

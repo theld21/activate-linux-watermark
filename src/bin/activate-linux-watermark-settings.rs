@@ -1,6 +1,6 @@
 // GTK4 settings app. Every change is saved instantly; the watermark picks it up live.
 use gtk4::prelude::*;
-use gtk4::{Adjustment, Application, ApplicationWindow, CheckButton, Entry, Grid, Label, Orientation, Scale, SpinButton};
+use gtk4::{Adjustment, Align, Application, ApplicationWindow, CheckButton, Entry, Grid, Label, Orientation, Scale, SpinButton, Switch};
 use std::{cell::RefCell, rc::Rc};
 
 #[path = "../config.rs"]
@@ -41,6 +41,14 @@ fn build(app: &Application) {
         grid.attach(&l, 0, row, 1, 1);
     };
 
+    // On/off switch.
+    let title = Label::builder().label("<b>Show watermark</b>").use_markup(true).xalign(0.0).build();
+    let switch = Switch::builder().active(c.enabled).halign(Align::End).valign(Align::Center).build();
+    grid.attach(&title, 0, 0, 2, 1);
+    grid.attach(&switch, 2, 0, 1, 1);
+    let cs = cfg.clone();
+    switch.connect_active_notify(move |sw| update(&cs, |c| c.enabled = sw.is_active()));
+
     // Text line + font size.
     let line = |row, title: &str, text: &str, size: f64, set_text: fn(&mut Config, String), set_size: fn(&mut Config, f64)| {
         label(title, row);
@@ -53,8 +61,8 @@ fn build(app: &Application) {
         let c2 = cfg.clone();
         spin.connect_value_changed(move |s| update(&c2, |c| set_size(c, s.value())));
     };
-    line(0, "Line 1", &c.line1, c.size1, |c, v| c.line1 = v, |c, v| c.size1 = v);
-    line(1, "Line 2", &c.line2, c.size2, |c, v| c.line2 = v, |c, v| c.size2 = v);
+    line(1, "Line 1", &c.line1, c.size1, |c, v| c.line1 = v, |c, v| c.size1 = v);
+    line(2, "Line 2", &c.line2, c.size2, |c, v| c.line2 = v, |c, v| c.size2 = v);
 
     // Margin and opacity sliders.
     let slider = |row, title: &str, max: f64, value: f64, set: fn(&mut Config, f64)| {
@@ -67,16 +75,17 @@ fn build(app: &Application) {
         let c = cfg.clone();
         scale.connect_value_changed(move |s| update(&c, |c| set(c, s.value().round())));
     };
-    slider(2, "Right margin", 1000.0, c.right, |c, v| c.right = v);
-    slider(3, "Bottom margin", 1000.0, c.bottom, |c, v| c.bottom = v);
-    slider(4, "Opacity (%)", 100.0, c.opacity, |c, v| c.opacity = v);
+    slider(3, "Right margin", 1000.0, c.right, |c, v| c.right = v);
+    slider(4, "Bottom margin", 1000.0, c.bottom, |c, v| c.bottom = v);
+    slider(5, "Opacity (%)", 100.0, c.opacity, |c, v| c.opacity = v);
 
     // DVD-logo style bouncing (ignores the margins).
     let bounce = CheckButton::builder().label("Bouncing watermark").active(c.bounce).build();
-    grid.attach(&bounce, 1, 5, 2, 1);
+    grid.attach(&bounce, 1, 6, 2, 1);
     let cb = cfg.clone();
     bounce.connect_toggled(move |b| update(&cb, |c| c.bounce = b.is_active()));
 
-    ApplicationWindow::builder().application(app).title("Activate Linux Watermark").default_width(560)
+    ApplicationWindow::builder().application(app).title("Activate Linux Watermark")
+        .icon_name("io.github.theld21.ActivateLinuxWatermark").default_width(560)
         .child(&grid).build().present();
 }

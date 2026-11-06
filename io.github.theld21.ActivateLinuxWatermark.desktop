@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Activate Linux Watermark
+Comment=Show and customize the "Activate Linux" watermark
+Exec=activate-linux-watermark-settings
+Icon=io.github.theld21.ActivateLinuxWatermark
+Categories=Utility;Settings;
+Keywords=activate;watermark;windows;dvd;
+StartupWMClass=io.github.theld21.ActivateLinuxWatermark

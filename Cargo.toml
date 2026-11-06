@@ -1,7 +1,7 @@
 [package]
 default-run = "activate-linux-watermark"
 name = "activate-linux-watermark"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 description = "A Windows-style \"Activate Linux\" watermark for your desktop"
 license = "MIT"
@@ -28,7 +28,8 @@ assets = [
   ["target/release/activate-linux-watermark", "usr/bin/", "755"],
   ["target/release/activate-linux-watermark-settings", "usr/bin/", "755"],
   ["activate-linux-watermark.desktop", "etc/xdg/autostart/", "644"],
-  ["activate-linux-watermark-settings.desktop", "usr/share/applications/", "644"],
+  ["io.github.theld21.ActivateLinuxWatermark.desktop", "usr/share/applications/", "644"],
+  ["assets/icon.svg", "usr/share/icons/hicolor/scalable/apps/io.github.theld21.ActivateLinuxWatermark.svg", "644"],
 ]
 
 [package.metadata.generate-rpm]
@@ -36,7 +37,8 @@ pre_uninstall_script = "pkill -f '^(/usr/bin/)?activate-linux-watermark$' || tru
 assets = [
   { source = "target/release/activate-linux-watermark", dest = "/usr/bin/activate-linux-watermark", mode = "755" },
   { source = "target/release/activate-linux-watermark-settings", dest = "/usr/bin/activate-linux-watermark-settings", mode = "755" },
-  { source = "activate-linux-watermark-settings.desktop", dest = "/usr/share/applications/activate-linux-watermark-settings.desktop", mode = "644" },
+  { source = "io.github.theld21.ActivateLinuxWatermark.desktop", dest = "/usr/share/applications/io.github.theld21.ActivateLinuxWatermark.desktop", mode = "644" },
+  { source = "assets/icon.svg", dest = "/usr/share/icons/hicolor/scalable/apps/io.github.theld21.ActivateLinuxWatermark.svg", mode = "644" },
   { source = "activate-linux-watermark.desktop", dest = "/etc/xdg/autostart/activate-linux-watermark.desktop", mode = "644" },
 ]
 [package.metadata.generate-rpm.requires]

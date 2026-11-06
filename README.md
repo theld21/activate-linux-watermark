@@ -31,11 +31,11 @@ Download the package from [Releases](https://github.com/theld21/activate-linux-w
     sudo dnf install ./activate-linux-watermark-*.x86_64.rpm   # Fedora / RHEL
     sudo apt install ./activate-linux-watermark_*_amd64.deb    # Ubuntu 22.04+ / Debian 12+
 
-It starts automatically at login. To start it now, open **Activate Linux Watermark Settings** from the app menu.
+It starts automatically at login. To start it now, open **Activate Linux Watermark** from your app list.
 
 ## Configure
 
-Open **Activate Linux Watermark Settings** to edit both lines, font sizes, margins, opacity, or turn on **Bouncing watermark**.
+Open **Activate Linux Watermark** from your app list to turn it on/off, edit both lines, font sizes, margins, opacity, or turn on **Bouncing watermark**.
 Changes apply instantly. Config file: `~/.config/activate-linux-watermark.conf`.
 
 ## Uninstall

@@ -2,11 +2,11 @@
 use std::path::PathBuf;
 
 #[derive(Clone)]
-pub struct Config { pub line1: String, pub size1: f64, pub line2: String, pub size2: f64, pub right: f64, pub bottom: f64, pub opacity: f64, pub bounce: bool }
+pub struct Config { pub enabled: bool, pub line1: String, pub size1: f64, pub line2: String, pub size2: f64, pub right: f64, pub bottom: f64, pub opacity: f64, pub bounce: bool }
 
 impl Default for Config {
     fn default() -> Self {
-        Config { line1: "Activate Linux".into(), size1: 26.0, line2: "Go to Settings to activate Linux.".into(),
+        Config { enabled: true, line1: "Activate Linux".into(), size1: 26.0, line2: "Go to Settings to activate Linux.".into(),
                  size2: 16.0, right: 90.0, bottom: 60.0, opacity: 40.0, bounce: false }
     }
 }
@@ -24,6 +24,7 @@ impl Config {
             let Some((k, v)) = l.split_once('=') else { continue };
             let num = |d: f64| v.trim().parse().unwrap_or(d);
             match k.trim() {
+                "enabled" => c.enabled = v.trim() != "0",
                 "line1" => c.line1 = v.into(),
                 "line2" => c.line2 = v.into(),
                 "size1" => c.size1 = num(c.size1),
@@ -40,8 +41,8 @@ impl Config {
 
     #[allow(dead_code)] // only used by the settings app
     pub fn save(&self) {
-        let s = format!("line1={}\nsize1={}\nline2={}\nsize2={}\nright={}\nbottom={}\nopacity={}\nbounce={}\n",
-            self.line1, self.size1, self.line2, self.size2, self.right, self.bottom, self.opacity, self.bounce as u8);
+        let s = format!("enabled={}\nline1={}\nsize1={}\nline2={}\nsize2={}\nright={}\nbottom={}\nopacity={}\nbounce={}\n",
+            self.enabled as u8, self.line1, self.size1, self.line2, self.size2, self.right, self.bottom, self.opacity, self.bounce as u8);
         let p = path();
         let _ = std::fs::create_dir_all(p.parent().unwrap());
         let _ = std::fs::write(p, s);
