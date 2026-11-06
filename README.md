@@ -35,6 +35,8 @@ It starts automatically at login. To start it now, open **Activate Linux Waterma
 
 ## Configure
 
+<p align="center"><img src="assets/settings.png" alt="Settings app" width="480"></p>
+
 Open **Activate Linux Watermark** from your app list to turn it on/off, edit both lines, font sizes, margins, opacity, or turn on **Bouncing watermark**.
 Changes apply instantly. Config file: `~/.config/activate-linux-watermark.conf`.
 
