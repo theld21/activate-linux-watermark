@@ -1,7 +1,7 @@
 [package]
 default-run = "activate-linux-watermark"
 name = "activate-linux-watermark"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 description = "A Windows-style \"Activate Linux\" watermark for your desktop"
 license = "MIT"

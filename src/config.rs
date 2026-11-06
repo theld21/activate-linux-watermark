@@ -7,7 +7,7 @@ pub struct Config { pub line1: String, pub size1: f64, pub line2: String, pub si
 impl Default for Config {
     fn default() -> Self {
         Config { line1: "Activate Linux".into(), size1: 26.0, line2: "Go to Settings to activate Linux.".into(),
-                 size2: 16.0, right: 90.0, bottom: 60.0, opacity: 50.0 }
+                 size2: 16.0, right: 90.0, bottom: 60.0, opacity: 40.0 }
     }
 }
 
