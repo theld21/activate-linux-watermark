@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Activate Linux Settings
+Comment=Change the watermark text, size and position
+Exec=activate-linux-settings
+Icon=preferences-desktop
+Categories=Settings;

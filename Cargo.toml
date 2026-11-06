@@ -1,0 +1,44 @@
+[package]
+default-run = "activate-linux"
+name = "activate-linux"
+version = "0.1.0"
+edition = "2021"
+description = "A Windows-style \"Activate Linux\" watermark for your desktop"
+license = "MIT"
+repository = "https://github.com/theld21/active-linux"
+authors = ["theld21 <thedev.ldt@gmail.com>"]
+
+[dependencies]
+x11rb = { version = "0.13", features = ["shape", "randr"] }
+fontdue = "0.9"
+gtk4 = "0.11"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[package.metadata.deb]
+depends = "libc6, fontconfig, libgtk-4-1"
+license-file = ["LICENSE", "0"]
+maintainer-scripts = "debian/"
+assets = [
+  ["target/release/activate-linux", "usr/bin/", "755"],
+  ["target/release/activate-linux-settings", "usr/bin/", "755"],
+  ["activate-linux.desktop", "etc/xdg/autostart/", "644"],
+  ["activate-linux-settings.desktop", "usr/share/applications/", "644"],
+]
+
+[package.metadata.generate-rpm]
+pre_uninstall_script = "pkill -x activate-linux || true"
+assets = [
+  { source = "target/release/activate-linux", dest = "/usr/bin/activate-linux", mode = "755" },
+  { source = "target/release/activate-linux-settings", dest = "/usr/bin/activate-linux-settings", mode = "755" },
+  { source = "activate-linux-settings.desktop", dest = "/usr/share/applications/activate-linux-settings.desktop", mode = "644" },
+  { source = "activate-linux.desktop", dest = "/etc/xdg/autostart/activate-linux.desktop", mode = "644" },
+]
+[package.metadata.generate-rpm.requires]
+fontconfig = "*"
+gtk4 = "*"

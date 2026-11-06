@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Activate Linux
+Exec=activate-linux
+NoDisplay=true
+X-GNOME-Autostart-enabled=true

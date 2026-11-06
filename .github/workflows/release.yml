@@ -1,0 +1,27 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    # Oldest supported runner = oldest glibc = widest distro compatibility.
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deb,cargo-generate-rpm
+      - run: cargo build --release
+      - run: cargo deb --no-build && cargo generate-rpm
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            target/debian/*.deb
+            target/generate-rpm/*.rpm
