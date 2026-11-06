@@ -113,9 +113,8 @@ fn remove_command() -> Option<[&'static str; 3]> {
 
 #[allow(deprecated)] // MessageDialog: AlertDialog needs GTK 4.10, Ubuntu 22.04 ships 4.6
 fn dialog(win: &ApplicationWindow, kind: MessageType, text: &str, detail: &str) -> MessageDialog {
-    let d = MessageDialog::builder().transient_for(win).modal(true).message_type(kind)
-        .text(text).secondary_text(detail).buttons(ButtonsType::None).build();
-    d
+    MessageDialog::builder().transient_for(win).modal(true).message_type(kind)
+        .text(text).secondary_text(detail).buttons(ButtonsType::None).build()
 }
 
 #[allow(deprecated)]
@@ -137,7 +136,7 @@ fn confirm_uninstall(win: &ApplicationWindow, button: &Button) {
         d.close();
         if r != ResponseType::Accept { return; }
         // pkexec shows the system password prompt; the package's prerm stops the watermark.
-        let Ok(mut child) = Command::new("pkexec").args(cmd).spawn() else { return };
+        let Ok(mut child) = Command::new("pkexec").args(cmd).spawn() else { return manual_uninstall(&win, cmd) };
         button.set_sensitive(false);
         let (win, button) = (win.clone(), button.clone());
         glib::timeout_add_local(Duration::from_millis(200), move || match child.try_wait() {
@@ -147,11 +146,35 @@ fn confirm_uninstall(win: &ApplicationWindow, button: &Button) {
                 win.application().map(|a| a.quit());
                 glib::ControlFlow::Break
             }
-            _ => { // cancelled or failed: keep everything as is
+            _ => { // cancelled or failed: show the command to run by hand
                 button.set_sensitive(true);
+                manual_uninstall(&win, cmd);
                 glib::ControlFlow::Break
             }
         });
     });
+    d.present();
+}
+
+/// Fallback: show the terminal command with a Copy button.
+#[allow(deprecated)]
+fn manual_uninstall(win: &ApplicationWindow, cmd: [&str; 3]) {
+    let command = format!("sudo {}", cmd.join(" "));
+    let d = dialog(win, MessageType::Error, "Could not uninstall automatically",
+        "Run this command in a terminal to remove the app:");
+    let entry = Entry::builder().text(&command).editable(false).hexpand(true).build();
+    let copy = Button::with_label("Copy");
+    copy.connect_clicked(move |b| {
+        b.clipboard().set_text(&command);
+        b.set_label("Copied");
+    });
+    let row = gtk4::Box::new(Orientation::Horizontal, 6);
+    row.append(&entry);
+    row.append(&copy);
+    if let Ok(area) = d.message_area().downcast::<gtk4::Box>() {
+        area.append(&row);
+    }
+    d.add_button("Close", ResponseType::Close);
+    d.connect_response(|d, _| d.close());
     d.present();
 }
